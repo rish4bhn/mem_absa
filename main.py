@@ -12,8 +12,8 @@ flags = tf.app.flags
 flags.DEFINE_integer("edim", 300, "internal state dimension [300]")
 flags.DEFINE_integer("lindim", 75, "linear part of the state [75]")
 flags.DEFINE_integer("nhop", 7, "number of hops [7]")
-flags.DEFINE_integer("batch_size", 128, "batch size to use during training [128]")
-flags.DEFINE_integer("nepoch", 100, "number of epoch to use during training [100]")
+flags.DEFINE_integer("batch_size", 1024, "batch size to use during training [128]")
+flags.DEFINE_integer("nepoch", 10, "number of epoch to use during training [100]")
 flags.DEFINE_float("init_lr", 0.01, "initial learning rate [0.01]")
 flags.DEFINE_float("init_hid", 0.1, "initial internal state value [0.1]")
 flags.DEFINE_float("init_std", 0.05, "weight initialization std [0.05]")
@@ -51,11 +51,17 @@ def main(_):
   print('loading pre-trained word vectors...')
   FLAGS.pre_trained_context_wt = init_word_embeddings(source_word2idx)
   FLAGS.pre_trained_target_wt = init_word_embeddings(target_word2idx)
+  
+  saver = tf.train.Saver()
 
   with tf.Session() as sess:
     model = MemN2N(FLAGS, sess)
     model.build_model()
     model.run(train_data, test_data)  
+    #save_path = saver.save(sess, "./model.ckpt")
+    #print("Model saved in file: %s" % save_path)
 
 if __name__ == '__main__':
-  tf.app.run()
+    #saver = tf.train.Saver()
+    tf.app.run()
+    

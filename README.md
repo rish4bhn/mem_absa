@@ -1,4 +1,5 @@
-## Aspect Level Sentiment Classification with Deep Memory Network
+## Aspect Level Sentiment Classification with Deep Memory Network (Forked)
+Major updates: upgrade to tf1.0 and fix some minor bugs)
 
 [TensorFlow](https://www.tensorflow.org/) implementation of [Tang et al.'s EMNLP 2016](https://arxiv.org/abs/1605.08900) work.
 

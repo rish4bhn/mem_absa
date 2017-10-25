@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 import tensorflow as tf
-from bokeh.charts import Bar
+from progress.bar import Bar
 
 
 class MemN2N(object):

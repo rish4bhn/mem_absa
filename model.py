@@ -262,8 +262,12 @@ class MemN2N(object):
         self.sess.run(self.A.assign(self.pre_trained_context_wt))
         self.sess.run(self.B.assign(self.pre_trained_context_wt))
         self.sess.run(self.ASP.assign(self.pre_trained_target_wt))
+
+        saver = tf.train.Saver(tf.trainable_variables())
         for idx in range(self.nepoch):
             print('epoch ' + str(idx) + '...')
             train_loss, train_acc = self.train(train_data)
             test_loss, test_acc = self.test(test_data)
             print('train-loss=%.2f;train-acc=%.2f;test-acc=%.2f;' % (train_loss, train_acc, test_acc))
+            save_path = saver.save(self.sess, "./models/model.ckpt", global_step=idx)
+            print("Model saved in file: %s" % save_path)

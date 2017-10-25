@@ -1,4 +1,3 @@
-
 import pprint
 
 import tensorflow as tf
@@ -56,13 +55,10 @@ def main(_):
     FLAGS.pre_trained_context_wt = init_word_embeddings(source_word2idx)
     FLAGS.pre_trained_target_wt = init_word_embeddings(target_word2idx)
 
-    saver = tf.train.Saver()
     with tf.Session() as sess:
         model = MemN2N(FLAGS, sess)
         model.build_model()
         model.run(train_data, test_data)
-        save_path = saver.save(sess, "./model.ckpt")
-        print("Model saved in file: %s" % save_path)
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 import tensorflow as tf
-from progress.bar import Bar
+from progressbar import Bar
 
 
 class MemN2N(object):
@@ -41,7 +41,7 @@ class MemN2N(object):
         self.log_perp = []
 
     def build_memory(self):
-        self.global_step = tf.Variable(0, name="global_step")
+        self.global_step = tf.Variable(0, name="global_step", trainable=False)
 
         self.A = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
         self.B = tf.Variable(tf.random_normal([self.nwords, self.edim], stddev=self.init_std))
@@ -109,7 +109,7 @@ class MemN2N(object):
 
         self.loss = tf.nn.softmax_cross_entropy_with_logits(logits=z, labels=self.target)
 
-        self.lr = tf.Variable(self.current_lr)
+        self.lr = tf.Variable(self.current_lr, trainable=False)
         self.opt = tf.train.GradientDescentOptimizer(self.lr)
 
         params = [self.A, self.B, self.C, self.T_A, self.T_B, self.W, self.ASP, self.BL_W, self.BL_B]
@@ -152,21 +152,21 @@ class MemN2N(object):
             Initilialize all the padding vector to 0 before backprop.
             TODO: Code is 5x slower due to the following initialization.
             '''
-            emb_a = self.A.eval()
-            emb_a[self.pad_idx, :] = 0
-            emb_b = self.B.eval()
-            emb_b[self.pad_idx, :] = 0
-            emb_c = self.C.eval()
-            emb_c[self.pad_idx, :] = 0
-            emb_ta = self.T_A.eval()
-            emb_ta[self.mem_size, :] = 0
-            emb_tb = self.T_B.eval()
-            emb_tb[self.mem_size, :] = 0
-            self.sess.run(self.A.assign(emb_a))
-            self.sess.run(self.B.assign(emb_b))
-            self.sess.run(self.C.assign(emb_c))
-            self.sess.run(self.T_A.assign(emb_ta))
-            self.sess.run(self.T_B.assign(emb_tb))
+            # emb_a = self.A.eval()
+            # emb_a[self.pad_idx, :] = 0
+            # emb_b = self.B.eval()
+            # emb_b[self.pad_idx, :] = 0
+            # emb_c = self.C.eval()
+            # emb_c[self.pad_idx, :] = 0
+            # emb_ta = self.T_A.eval()
+            # emb_ta[self.mem_size, :] = 0
+            # emb_tb = self.T_B.eval()
+            # emb_tb[self.mem_size, :] = 0
+            # self.sess.run(self.A.assign(emb_a))
+            # self.sess.run(self.B.assign(emb_b))
+            # self.sess.run(self.C.assign(emb_c))
+            # self.sess.run(self.T_A.assign(emb_ta))
+            # self.sess.run(self.T_B.assign(emb_tb))
 
             for b in range(self.batch_size):
                 if cur >= len(rand_idx):  break
@@ -210,21 +210,21 @@ class MemN2N(object):
             time.fill(self.mem_size)
             context.fill(self.pad_idx)
 
-            emb_a = self.A.eval()
-            emb_a[self.pad_idx, :] = 0
-            emb_b = self.B.eval()
-            emb_b[self.pad_idx, :] = 0
-            emb_c = self.C.eval()
-            emb_c[self.pad_idx, :] = 0
-            emb_ta = self.T_A.eval()
-            emb_ta[self.mem_size, :] = 0
-            emb_tb = self.T_B.eval()
-            emb_tb[self.mem_size, :] = 0
-            self.sess.run(self.A.assign(emb_a))
-            self.sess.run(self.B.assign(emb_b))
-            self.sess.run(self.C.assign(emb_c))
-            self.sess.run(self.T_A.assign(emb_ta))
-            self.sess.run(self.T_B.assign(emb_tb))
+            # emb_a = self.A.eval()
+            # emb_a[self.pad_idx, :] = 0
+            # emb_b = self.B.eval()
+            # emb_b[self.pad_idx, :] = 0
+            # emb_c = self.C.eval()
+            # emb_c[self.pad_idx, :] = 0
+            # emb_ta = self.T_A.eval()
+            # emb_ta[self.mem_size, :] = 0
+            # emb_tb = self.T_B.eval()
+            # emb_tb[self.mem_size, :] = 0
+            # self.sess.run(self.A.assign(emb_a))
+            # self.sess.run(self.B.assign(emb_b))
+            # self.sess.run(self.C.assign(emb_c))
+            # self.sess.run(self.T_A.assign(emb_ta))
+            # self.sess.run(self.T_B.assign(emb_tb))
 
             raw_labels = []
             for b in range(self.batch_size):
@@ -269,5 +269,5 @@ class MemN2N(object):
             train_loss, train_acc = self.train(train_data)
             test_loss, test_acc = self.test(test_data)
             print('train-loss=%.2f;train-acc=%.2f;test-acc=%.2f;' % (train_loss, train_acc, test_acc))
-            save_path = saver.save(self.sess, "./models/model.ckpt", global_step=idx)
-            print("Model saved in file: %s" % save_path)
+            # save_path = saver.save(self.sess, "./models/model.ckpt", global_step=idx)
+            # print("Model saved in file: %s" % save_path)

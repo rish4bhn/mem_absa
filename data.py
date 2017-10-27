@@ -75,6 +75,7 @@ def read_data(fname, source_count, source_word2idx, target_count, target_word2id
             max_sent_len = len(text.split())
         for asp_terms in sentence.iter('aspectTerms'):
             for asp_term in asp_terms.findall('aspectTerm'):
+                if asp_term.get("polarity") == "conflict": continue #TODO:
                 target_words.append(asp_term.get('term').lower())
     if len(source_count) == 0:
         source_count.append(['<pad>', 0])
@@ -98,6 +99,7 @@ def read_data(fname, source_count, source_word2idx, target_count, target_word2id
                 idx.append(source_word2idx[word])
             for asp_terms in sentence.iter('aspectTerms'):
                 for asp_term in asp_terms.findall('aspectTerm'):
+                    if asp_term.get("polarity") =="conflict": continue #TODO:
                     source_data.append(idx)
                     pos_info, lab = _get_data_tuple(text, asp_term.get('term').lower(), int(asp_term.get('from')),
                                                     int(asp_term.get('to')), asp_term.get('polarity'), source_word2idx)

@@ -1,7 +1,7 @@
 import pprint
 
 import tensorflow as tf
-
+import numpy as np
 from data import read_data
 from model import MemN2N
 
@@ -28,7 +28,6 @@ FLAGS = flags.FLAGS
 
 
 def init_word_embeddings(word2idx):
-    import numpy as np
     wt = np.random.normal(0, FLAGS.init_std, [len(word2idx), FLAGS.edim])
     with open(FLAGS.pretrain_file, 'r') as f:
         for line in f:

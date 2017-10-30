@@ -8,12 +8,46 @@ import spacy
 en_nlp = spacy.load("en")
 
 
+# def _get_abs_pos(cur, ids):
+#     min_dist = 1000
+#     for i in ids:
+#         if abs(cur - i) < min_dist:
+#             min_dist = abs(cur - i)
+#     if min_dist == 1000:
+#         raise ("[!] ids list is empty")
+#     return min_dist
+#
+#
+# def _count_pre_spaces(text):
+#     count = 0
+#     for i in range(len(text)):
+#         if text[i].isspace():
+#             count = count + 1
+#         else:
+#             break
+#     return count
+#
+#
+# def _count_mid_spaces(text, pos):
+#     count = 0
+#     for i in range(len(text) - pos):
+#         if text[pos + i].isspace():
+#             count = count + 1
+#         else:
+#             break
+#     return count
+#
+#
+# def _check_if_ranges_overlap(x1, x2, y1, y2):
+#     return x1 <= y2 and y1 <= x2
+
+
 def _get_data_tuple(sptoks, asp_term, from_idx, to_idx, label, word2idx):
     # Find the ids of aspect term
     aspect_is = []
     for sptok in sptoks:
         # if sptok.idx >= from_idx and sptok.idx + len(sptok.text) <= to_idx:
-        if sptok.idx < to_idx and sptok.idx + len(sptok.text) > from_idx:  # as long as it has intersection
+        if sptok.idx<to_idx and sptok.idx + len(sptok.text) > from_idx:
             aspect_is.append(sptok.i)
 
     assert aspect_is, pdb.set_trace()
@@ -32,6 +66,32 @@ def _get_data_tuple(sptoks, asp_term, from_idx, to_idx, label, word2idx):
         raise ValueError("Unknown label: %s" % lab)
 
     return pos_info, lab
+
+
+# def old_get_data_tuple(sptoks, asp_term, fro, to, label, word2idx):
+#     # Find the ids of aspect term
+#     ids, st, i = [], _count_pre_spaces(sptoks.text), 0
+#     for sptok in sptoks:
+#         if _check_if_ranges_overlap(st, st + len(sptok.text) - 1, fro, to - 1):
+#             ids.append(i)
+#         st = st + len(sptok.text) + _count_mid_spaces(sptok.text.lower(), st + len(sptok.text))
+#         i = i + 1
+#     pos_info, i = [], 0
+#     for sptok in sptoks:
+#         pos_info.append(_get_abs_pos(i, ids))
+#         i = i + 1
+#
+#     lab = None
+#     if label == 'negative':
+#         lab = -1
+#     elif label == 'neutral':
+#         lab = 0
+#     elif label == "positive":
+#         lab = 1
+#     else:
+#         raise ValueError("Unknown label: %s" % lab)
+#
+#     return pos_info, lab
 
 
 def read_data(fname, source_count, source_word2idx):

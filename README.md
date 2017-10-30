@@ -1,7 +1,19 @@
 ## Aspect Level Sentiment Classification with Deep Memory Network (Forked)
-Major updates: upgrade to tf1.0 and fix some minor bugs)
+Major updates to the original repo:
+* Tweak the model to **improve the accuracy by 8%**. Current accuracy (for both datasets) is close to that of the original paper. Major changes(improvement): 
+    * Use spacy for tokenization (very important)
+    * Correct position encoding 
+    * Combine source and target word index
+    * Accept multi-target words as input
+    * Remove conflict training examples
+    * Set Embeddings to be not trainable (to generalize for other datasets) 
+* Provide training logs
+* Upgrade to tensorflow 1.0 and fix some minor bugs
 
-[TensorFlow](https://www.tensorflow.org/) implementation of [Tang et al.'s EMNLP 2016](https://arxiv.org/abs/1605.08900) work.
+
+
+---------------
+[TensorFlow](https://www.tensorflow.org/) implementation of [Tang et al.'s EMNLP 2016](https://arxiv.org/abs/1605.08900) work. (improvements on [ganeshjawahar](https://github.com/ganeshjawahar/mem_absa)'s implementation)
 
 ### Problem Statement
 Given a sentence and an aspect occurring in the sentence, this task aims at inferring the sentiment polarity (e.g. positive, negative, neutral) of the aspect.
@@ -34,11 +46,11 @@ Note this code requires TensorFlow, Future and Progress packages to be installed
 * `test_data`: test gold data set path [./data/Laptops_Test_Gold.xml] or [./data/Restaurants_Test_Gold.xml]
 * `show`: print progress [False]
 
-### Performance - Laptop Dataset (todo)
+### Performance - Laptop Dataset
 | Model | In Paper | This Code|
 |---|---|---|
 |MemNet (1)|67.66||
-|MemNet (2)|71.14||
+|MemNet (2)|71.14|69.0|
 |MemNet (3)|71.74||
 |MemNet (4)|72.21||
 |MemNet (5)|71.89||
@@ -47,11 +59,11 @@ Note this code requires TensorFlow, Future and Progress packages to be installed
 |MemNet (8)|72.05||
 |MemNet (9)|72.21||
 
-### Performance - Restaurant Dataset (todo)
+### Performance - Restaurant Dataset
 | Model | In Paper | This Code|
 |---|---|---|
 |MemNet (1)|76.10||
-|MemNet (2)|78.61||
+|MemNet (2)|78.61|78.0|
 |MemNet (3)|79.06||
 |MemNet (4)|79.87||
 |MemNet (5)|80.14||
@@ -61,11 +73,9 @@ Note this code requires TensorFlow, Future and Progress packages to be installed
 |MemNet (9)|80.95||
 
 ### Acknowledgements
+* More than 90% of the code is borrowed from [ganeshjawahar](https://github.com/ganeshjawahar/mem_absa).
 * More than 80% of the code is borrowed from [carpedm20](https://github.com/carpedm20/MemN2N-tensorflow).
 * Using this code means you have read and accepted the copyrights set by the dataset providers.
-
-### Author
-[Ganesh J](https://researchweb.iiit.ac.in/~ganesh.j/)
 
 ### Licence
 MIT

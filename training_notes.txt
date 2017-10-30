@@ -1,0 +1,13 @@
+* combine source_widx and target_widx, make aspect multiple words: it's improving to 0.64. unfortunately, not reproducible
+* force ASP = A: become worse 0.59, and not stable, train_loss cannot be improved either
+* force B = A: become worse 0.57, so we cannot force B = A
+* force A,B, ASP not trainable, result is 0.62 in epoch 23, relative stable (still might see super bad results)
+* add location encoding (*): improves! epoch 35, train-loss=0.28;train-acc=0.92;test-acc=0.67;
+* force embedding <PAD> to be 0: epoch 60, train-loss=0.33;train-acc=0.91;test-acc=0.68;
+* get a T_A, and initialize it with 1-j/J, it's okay, 0.64
+* getting rid of position encoding for B doesn't have a better result
+* rerun best model (0.68before), and train-loss=0.71;train-acc=0.70;test_loss=0.79;test-acc=0.66;epoch 14
+train-loss=0.75;train-acc=0.75;test_loss=0.77;test-acc=0.72;epoch17
+* use spacy, easily train-loss=0.50;train-acc=0.80;test_loss=0.70;test-acc=0.69; epoch 21, hop=2, trainable false
+epoch 31...
+train-loss=0.47;train-acc=0.82;test_loss=0.65;test-acc=0.78;

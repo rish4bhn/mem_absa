@@ -10,7 +10,10 @@ Major updates to the original repo:
 * Provide training logs
 * Upgrade to tensorflow 1.0 and fix some minor bugs
 
-
+### Dependencies
+progressbar 1.3
+tensorflow 0.12
+future
 
 ---------------
 [TensorFlow](https://www.tensorflow.org/) implementation of [Tang et al.'s EMNLP 2016](https://arxiv.org/abs/1605.08900) work. (improvements on [ganeshjawahar](https://github.com/ganeshjawahar/mem_absa)'s implementation)

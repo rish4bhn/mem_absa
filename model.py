@@ -4,7 +4,8 @@ import traceback
 
 import numpy as np
 import tensorflow as tf
-from progressbar import Bar
+# from progressbar import Bar
+from progress.bar import Bar
 
 
 class MemN2N(object):
@@ -81,7 +82,7 @@ class MemN2N(object):
             '''
             til_hid = tf.tile(self.hid[-1], [1, self.mem_size])
             til_hid3dim = tf.reshape(til_hid, [-1, self.mem_size, self.edim])
-            a_til_concat = tf.concat([til_hid3dim, Ain], axis=2)
+            a_til_concat = tf.concat_v2([til_hid3dim, Ain], axis=2)
             til_bl_wt = tf.tile(self.BL_W, [self.batch_size, 1])
             til_bl_3dim = tf.reshape(til_bl_wt, [self.batch_size, -1, 2 * self.edim])
             att = tf.matmul(a_til_concat, til_bl_3dim, adjoint_b=True)
@@ -106,7 +107,7 @@ class MemN2N(object):
                 F = tf.slice(Dout, [0, 0], [self.batch_size, self.lindim])
                 G = tf.slice(Dout, [0, self.lindim], [self.batch_size, self.edim - self.lindim])
                 K = tf.nn.relu(G)
-                self.hid.append(tf.concat([F, K], axis=1))
+                self.hid.append(tf.concat_v2([F, K], axis=1))
 
     def build_model(self):
         self.build_memory()
@@ -151,6 +152,7 @@ class MemN2N(object):
         if self.show:
             # from utils import ProgressBar
             # bar = ProgressBar('Train', max=N)
+            # bar = Bar('Train', max=N)
             bar = Bar('Train', max=N)
 
         np.random.seed(100)

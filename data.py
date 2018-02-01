@@ -2,7 +2,9 @@ import os
 import pdb
 import xml.etree.ElementTree as ET
 from collections import Counter
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 import spacy
 
 en_nlp = spacy.load("en")
@@ -43,14 +45,14 @@ def read_data(fname, source_count, source_word2idx):
 
     source_words, target_words, max_sent_len = [], [], 0
     for sentence in root:
-        sptoks = en_nlp(sentence.find('text').text)
+        sptoks = en_nlp((sentence.find('text').text).decode('utf-8'))
         source_words.extend([sp.text.lower() for sp in sptoks])
         if len(sptoks) > max_sent_len:
             max_sent_len = len(sptoks)
         for asp_terms in sentence.iter('aspectTerms'):
             for asp_term in asp_terms.findall('aspectTerm'):
                 if asp_term.get("polarity") == "conflict": continue  # TODO:
-                t_sptoks = en_nlp(asp_term.get('term'))
+                t_sptoks = en_nlp((asp_term.get('term')).decode('utf-8'))
                 target_words.extend([sp.text.lower() for sp in t_sptoks])
     if len(source_count) == 0:
         source_count.append(['<pad>', 0])
@@ -62,7 +64,7 @@ def read_data(fname, source_count, source_word2idx):
 
     source_data, source_loc_data, target_data, target_label = list(), list(), list(), list()
     for sentence in root:
-        sptoks = en_nlp(sentence.find('text').text)
+        sptoks = en_nlp((sentence.find('text').text).decode('utf-8'))
         if len(sptoks.text.strip()) != 0:
             idx = []
             for sptok in sptoks:
@@ -70,7 +72,7 @@ def read_data(fname, source_count, source_word2idx):
             for asp_terms in sentence.iter('aspectTerms'):
                 for asp_term in asp_terms.findall('aspectTerm'):
                     if asp_term.get("polarity") == "conflict": continue  # TODO:
-                    t_sptoks = en_nlp(asp_term.get('term'))
+                    t_sptoks = en_nlp((asp_term.get('term')).decode('utf-8'))
                     source_data.append(idx)
                     pos_info, lab = _get_data_tuple(sptoks, t_sptoks, int(asp_term.get('from')),
                                                     int(asp_term.get('to')), asp_term.get('polarity'), source_word2idx)

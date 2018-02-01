@@ -11,7 +11,7 @@ Major updates to the original repo:
 * Upgrade to tensorflow 1.0 and fix some minor bugs
 
 ### Dependencies
-progressbar 1.3
+progress 1.3
 tensorflow 0.12
 future
 
